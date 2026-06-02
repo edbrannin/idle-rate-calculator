@@ -10,6 +10,7 @@ const DecimalInput: FC<InputProps> = ({ name, value, setter }) => (
     <div>
         <h2>{name}</h2>
         <input
+            name={name}
             style={{
                 fontSize: '2em',
             }}
