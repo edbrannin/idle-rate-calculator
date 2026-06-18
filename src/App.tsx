@@ -23,9 +23,9 @@ function App() {
   
   // const setter = (name: keyof Form) => (value: string) => setState(({ ...urlState, [name]: value }))
 
-  const targetValue = sp.get('targetValue');
-  const ratePerSecond = sp.get('ratePerSecond');
-  const currentValue = sp.get('currentValue');
+  const targetValue = sp.get('targetValue') || DEFAULTS.targetValue;
+  const ratePerSecond = sp.get('ratePerSecond') || DEFAULTS.ratePerSecond;
+  const currentValue = sp.get('currentValue') || DEFAULTS.currentValue;
   const setter = (name: keyof Form) => (value: string) => setSp(params => {
     params.set(name, value);
     return params;
