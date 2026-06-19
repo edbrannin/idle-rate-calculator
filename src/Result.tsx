@@ -84,7 +84,7 @@ const Result: FC<ResultProps> = ({ desired, current, ratePerSecond }) => {
 
   return (
     <div>
-      <h1>Result</h1>
+      <h2>Result</h2>
       <p>Target: {target.toExponential(3)}</p>
       <table>
         <tbody>

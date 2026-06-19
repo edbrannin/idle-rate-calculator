@@ -32,12 +32,18 @@ function App() {
   })
 
   return (
-    <>
+    <section style={{
+      display: 'flex',
+      flexDirection: 'column',
+    }}>
+      <h1>Idle Rate Calculator</h1>
       <section id="center" style={{
         display: 'flex',
         flexDirection: 'row',
+        alignItems: 'baseline'
       }}>
         <div>
+          <h2>Inputs</h2>
           <DecimalInput name="Desired Amount" value={targetValue} setter={setter('targetValue')} />
           <DecimalInput name="Rate Per Second" value={ratePerSecond} setter={setter('ratePerSecond')} />
           <DecimalInput name="Current Amount" value={currentValue} setter={setter('currentValue')} />
@@ -46,10 +52,7 @@ function App() {
           <Result current={currentValue} desired={targetValue} ratePerSecond={ratePerSecond} />
         </div>
       </section>
-
-
-      <section id="spacer"></section>
-    </>
+    </section>
   )
 }
 
