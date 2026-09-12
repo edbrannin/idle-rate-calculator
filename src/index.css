@@ -109,3 +109,16 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+a.repo {
+  display: block;
+  position: absolute;
+  bottom: 1em;
+  right: 1em;
+}
+
+a.repo svg {
+  height: 2em;
+  fill: var(--text);
+  stroke: var(--text);
+}
