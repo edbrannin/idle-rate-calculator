@@ -1,7 +1,8 @@
 import './App.css'
 import Result from './Result'
 import DecimalInput from './DecimalInput';
-import { useSearchParams } from 'react-router';
+import { useSearchParams, type SetURLSearchParams } from 'react-router';
+import { useEffect, useRef, useState } from 'react';
 
 const DEFAULTS: Form = {
   currentValue: "0",
@@ -16,21 +17,32 @@ type Form = {
   ratePerSecond: string;
 };
 
+const useUrlParam = (sp: [URLSearchParams, SetURLSearchParams], key: keyof Form): [string, (val: string) => void] => {
+  const [spValues, spSetters] = sp;
+  // Initialize state to URL-params value
+  const [value, setter] = useState(() => spValues.get(key) || DEFAULTS[key])
+  const valueRef = useRef(value);
+  useEffect(() => {
+    if (value !== valueRef.current) {
+      // Keep URL-params value in sync with state
+      spSetters(params => {
+        params.set(key, value);
+        return params;
+      })
+      valueRef.current = value;
+    }
+  }, [key, value, valueRef, spSetters])
+  return [value, setter];
+}
+
 function App() {
-  const [sp, setSp] = useSearchParams(DEFAULTS);
+  const params = useSearchParams(DEFAULTS);
+  const [targetValue, setTargetValue] = useUrlParam(params, 'targetValue');
+  const [ratePerSecond, setRatePerSecond] = useUrlParam(params, 'ratePerSecond');
+  const [currentValue, setCurrentValue] = useUrlParam(params, 'currentValue');
 
-  console.log('search params', sp);
+  console.log('search params', params);
   
-  // const setter = (name: keyof Form) => (value: string) => setState(({ ...urlState, [name]: value }))
-
-  const targetValue = sp.get('targetValue') || DEFAULTS.targetValue;
-  const ratePerSecond = sp.get('ratePerSecond') || DEFAULTS.ratePerSecond;
-  const currentValue = sp.get('currentValue') || DEFAULTS.currentValue;
-  const setter = (name: keyof Form) => (value: string) => setSp(params => {
-    params.set(name, value);
-    return params;
-  })
-
   return (
     <section style={{
       display: 'flex',
@@ -44,9 +56,9 @@ function App() {
       }}>
         <div>
           <h2>Inputs</h2>
-          <DecimalInput name="Desired Amount" value={targetValue} setter={setter('targetValue')} />
-          <DecimalInput name="Rate Per Second" value={ratePerSecond} setter={setter('ratePerSecond')} />
-          <DecimalInput name="Current Amount" value={currentValue} setter={setter('currentValue')} />
+          <DecimalInput name="Desired Amount" value={targetValue} setter={setTargetValue} />
+          <DecimalInput name="Rate Per Second" value={ratePerSecond} setter={setRatePerSecond} />
+          <DecimalInput name="Current Amount" value={currentValue} setter={setCurrentValue} />
         </div>
         <div>
           <Result current={currentValue} desired={targetValue} ratePerSecond={ratePerSecond} />
