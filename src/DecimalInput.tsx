@@ -17,7 +17,7 @@ const DecimalInput: FC<InputProps> = ({ name, value, setter }) => (
             name={name}
             style={{
                 fontSize: '2em',
-                width: '7em',
+                width: '5em',
             }}
             value={value}
             onChange={e => setter(e.target.value)}
